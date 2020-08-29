@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Formalising polynomials :: Shing Tak Lam</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="One thing that comes up frequently in mathematics is the idea of polynomials, and we would like to be able to reason on any polynomial. To do this requires us to develop the theory of polynomials.
+To start off, we need the definition of polynomials. Wikipedia says
+ In mathematics, a polynomial is an expression consisting of variables (also called indeterminates) and coefficients, that involves only the operations of addition, subtraction, multiplication, and non-negative integer exponents of variables" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/formalising_polynomials/" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/orange.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Formalising polynomials :: Shing Tak Lam">
+<meta property="og:description" content="One thing that comes up frequently in mathematics is the idea of polynomials, and we would like to be able to reason on any polynomial. To do this requires us to develop the theory of polynomials.
+To start off, we need the definition of polynomials. Wikipedia says
+ In mathematics, a polynomial is an expression consisting of variables (also called indeterminates) and coefficients, that involves only the operations of addition, subtraction, multiplication, and non-negative integer exponents of variables" />
+<meta property="og:url" content="/posts/formalising_polynomials/" />
+<meta property="og:site_name" content="Formalising polynomials" />
+
+  
+    <meta property="og:image" content="/img/favicon/orange.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-08-22 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="orange">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Home
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/projects">Projects</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/projects">Projects</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/formalising_polynomials/">Formalising polynomials</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-08-22 
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>One thing that comes up frequently in mathematics is the idea of polynomials, and we would like to be able to reason on any polynomial. To do this requires us to develop the theory of polynomials.</p>
+<p>To start off, we need the definition of polynomials. Wikipedia says</p>
+<blockquote>
+<p>In mathematics, a polynomial is an expression consisting of variables (also called indeterminates) and coefficients, that involves only the operations of addition, subtraction, multiplication, and non-negative integer exponents of variables</p>
+</blockquote>
+<p>In summary, a polynomial is a sum of monomials, terms of the form <code>a * x^n * y^m * ...</code> (a <strong>finite</strong> product) where <code>a</code> is a value in the ring, <code>x</code>, <code>y</code>, &hellip; are variables and <code>n</code>, <code>m</code>, &hellip; are natural numbers.</p>
+<h2 id="lists">Lists<a href="#lists" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>To represent a polynomial, the basic represenation could be using a list to store the coefficients. For example, the polynomial <code>1 + 3x + 5x^2 + 7x^3</code> could be stored as <code>[1, 3, 5, 7]</code> and <code>1 + x^2 + x^3</code> can be <code>[1, 0, 1, 1]</code>. However this representation comes with it&rsquo;s own issues.</p>
+<p>The first and foremost is that representations are not unique. If we have <code>1 + x^2 + x^3</code> from before, then <code>[1, 0, 1, 1]</code>, <code>[1, 0, 1, 1, 0]</code>, <code>[1, 0, 1, 1, 0, 0]</code> &hellip; are all valid representations of this polynomial.</p>
+<p>One way to solve this would be to add in a requirement for the last coefficient to be non-zero. This is what is commonly done in mathematics, however this comes with it&rsquo;s own issues, as adding a proof term to the definition makes it more difficult to reason with and requires additional proofs when creating definitions that generate polynomials. Also, the polynomial <code>0</code> is a valid polynomial which we would like to be able to reason with as well. We can&rsquo;t represent this using the singleton list <code>[0]</code>, as this would not satisfy the criteria for the last item in the list to be non-zero. The alternative would be to store it using the empty list <code>[]</code>, however reasoning about the last term of potentially empty lists brings it&rsquo;s own issues.</p>
+<p>Another way to solve this is to add an equivalence relation on polynomials and consider the quotient. A similar approach is used in mathlib to represent multisets as a quotient of lists by permutations. However, this method does not generalise as well when the polynomials in question have multiple variables.</p>
+<h2 id="hash-map">Hash map<a href="#hash-map" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Another method would be to model the polynomial as a hash map where <code>polynomial R</code> is a hash map from <code>ℕ</code> to <code>R</code>. So the polynomial <code>1 + x^2 + x^3</code> could be represented by <code>{0: 1, 2: 1, 3: 1}</code> (to use Python&rsquo;s representation for dictionaries), and <code>1 + 3x + 5x ^2 + 7x^3</code> would be <code>{0: 1, 1: 3, 2: 5, 3: 7}</code>.</p>
+<p>Right now, this still has the issue of zero coefficients. However, this is in fact much easier to solve, as we just need a constraint that all the values in the hash map must be non zero. This ends up being simpler to reason with when compared to the last item in the list like before, since we do not have the worry about potentially empty lists like before, and reasoning about adding two polynomials is also much simpler. Another benefit is with large polynomials. Say if we have the polynomial <code>1 + x^100</code>, then the list representing this has length <code>100</code>. Whereas with a hashmap, we only need to store two coefficients and exponents.</p>
+<h2 id="finitely-supported-functions">Finitely Supported Functions<a href="#finitely-supported-functions" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The two methods above for storing polynomials are quite good for computations, and the hash map is getting quite close to what we want. However, we don&rsquo;t necessarily want to limit ourselves to a hash map, and generalizing over the underlying data structure can be helpful, as we care about properties, not implementations. So let&rsquo;s analyse what we need:</p>
+<ul>
+<li>A function from <code>ℕ</code> to <code>R</code> (powers to coefficients)
+<ul>
+<li>which returns a non-zero value for finitely many inputs</li>
+<li>and returns zero otherwise</li>
+</ul>
+</li>
+</ul>
+<p>One way to implement this would be:</p>
+<ul>
+<li>A function <code>f : ℕ → R</code></li>
+<li>A finite set <code>s : finset ℕ</code></li>
+<li>A proof that <code>f n ≠ 0 ↔ n ∈ s</code></li>
+</ul>
+<p>In fact, the properties we want here are known as a finitely supported function, and this is how mathlib implements polynomials.</p>
+<pre><code class="language-lean" data-lang="lean">structure finsupp (α : Type*) (β : Type*) [has_zero β] :=
+(support            : finset α)
+(to_fun             : α → β)
+(mem_support_to_fun : ∀a, a ∈ support ↔ to_fun a ≠ 0)
+</code></pre><p>and <code>polynomial R</code> is just implemented as</p>
+<pre><code class="language-lean" data-lang="lean">def polynomial (R : Type*) [semiring R] := add_monoid_algebra R ℕ
+</code></pre><p>(<code>add_monoid_algebra</code> is just a thin wrapper type over <code>finsupp</code>, the definition above is the same as <code>finsupp ℕ R</code>).</p>
+<h2 id="extension-to-multi-variate-polynomials">Extension to multi-variate polynomials<a href="#extension-to-multi-variate-polynomials" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Another benefit of this approach is that it generalises very nicely to multi-variate polynomials. If we look at the polynomial <code>x^2 + 2xy + y^2</code>, then a list would not be a good approach. Even though there is a bijection between <code>ℕ</code> and <code>ℕ²</code> (and higher powers), it a very inefficient approach, as there will be a large number of <code>0</code> terms when representing more complex polynomials.</p>
+<p>The hash map approach generalises quite well. We first need a set of variables <code>x_1</code>, <code>x_2</code>, and so on. Note that the index doesn&rsquo;t have to be a natural number, so we can use an arbitrary indexing type <code>σ</code>. Then we can use a hash map to represent the exponent in each term, and then use those hash maps to store the coefficients. So if we have a multivariate poylnomial with indexing type <code>σ</code> and coefficients in <code>R</code>, we can represent it with</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">hashmap (hashmap σ ℕ) R
+</code></pre></div><p>So the polynomial <code>p = x^2 + 2xy + y^2</code> could be stored like so:</p>
+<p>Let <code>σ</code> be an inductive type with constructors <code>x</code> and <code>y</code>, then <code>p</code> can be stored as <code>{{x:2}:1, {x:1,y:1}:2, {y:2}:1}</code>.</p>
+<p>Much like we abstracted away the implementation details for single variable polynomials, we can do the same for multi variable polynomials. In mathlib, multivariate polynomials are defined like so:</p>
+<pre><code class="language-lean" data-lang="lean">def mv_polynomial (σ : Type*) (α : Type*) [comm_semiring α] := add_monoid_algebra α (σ →₀ ℕ)
+</code></pre><p>which is equivalent to</p>
+<pre><code class="language-lean" data-lang="lean">finsupp (finsupp σ ℕ) R
+</code></pre>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="/posts/rosetta/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Rosetta</span>
+            </a>
+        </span>
+        
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+    <div class="footer__inner">
+      
+        <div class="copyright copyright--user">
+          <span>2020 Shing Tak Lam. All rights reserved.</span>
+      
+          <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+        </div>
+    </div>
+  </footer>
+  
+  
+  
+  
+  
+  
+  <script src="/js/menu.js"></script>
+  <script src="/js/prism.js"></script>
+  
+  
+  
+
+
+  
+</div>
+
+</body>
+</html>
