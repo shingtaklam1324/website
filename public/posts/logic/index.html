@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Basic Logic in Lean :: Shing Tak Lam</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A cool website for learning some basic logic is the Incredible Proof Machine, which can be found here. The web UI allows for the user to see what they&amp;rsquo;re doing, and how everything ties together. However, this UI can sometimes be a bit frustrating, and sometimes we end up spending more time than necessary creating the same sub-proof over and over again. So I got interesting in trying to port this to Lean, and see what it would be like to try and solve them in Lean instead." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/posts/logic/" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/img/favicon/orange.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Basic Logic in Lean :: Shing Tak Lam">
+<meta property="og:description" content="A cool website for learning some basic logic is the Incredible Proof Machine, which can be found here. The web UI allows for the user to see what they&amp;rsquo;re doing, and how everything ties together. However, this UI can sometimes be a bit frustrating, and sometimes we end up spending more time than necessary creating the same sub-proof over and over again. So I got interesting in trying to port this to Lean, and see what it would be like to try and solve them in Lean instead." />
+<meta property="og:url" content="/posts/logic/" />
+<meta property="og:site_name" content="Basic Logic in Lean" />
+
+  
+    <meta property="og:image" content="/img/favicon/orange.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-08-30 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="orange">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Home
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/projects">Projects</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="/projects">Projects</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/posts/logic/">Basic Logic in Lean</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-08-30 
+      </span>
+    
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>A cool website for learning some basic logic is the Incredible Proof Machine, which can be found <a href="http://incredible.pm/">here</a>. The web UI allows for the user to see what they&rsquo;re doing, and how everything ties together. However, this UI can sometimes be a bit frustrating, and sometimes we end up spending more time than necessary creating the same sub-proof over and over again. So I got interesting in trying to port this to Lean, and see what it would be like to try and solve them in Lean instead.</p>
+<h2 id="session-1">Session 1<a href="#session-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>All of the exercises in Session 1 on the page are to do with conjunctions, and we can easily formalise these in Lean. For example, we can look at a basic exercise showing that <code>A ∧ B → B ∧ A</code>.</p>
+<pre><code class="language-lean" data-lang="lean">example (h : A ∧ B) : B ∧ A :=
+begin
+  cases h with hA hB,
+  split,
+  exact hB,
+  exact hA,
+end
+</code></pre><p>Much like the webpage, we can split the <code>A ∧ B</code> into <code>A</code> and <code>B</code>. We can also split the goal <code>B ∧ A</code> into <code>B</code> and <code>A</code> and prove each one separately.</p>
+<h2 id="session-2">Session 2<a href="#session-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>In Session 2, implication is introduced. In the Incredible Proof Machine, there is a block for showing that if <code>X → Y</code> and we have a proof of <code>X</code>, then we have a proof of <code>Y</code>. In Lean, <code>X → Y</code> is just the type of functions from <code>X</code> to <code>Y</code>, so this is in fact just the same as applying a function. There is also a block for showing <code>X → Y</code>, and in Lean we can emulate that with a <code>have</code>, which adds a new local hypothesis.</p>
+<pre><code class="language-lean" data-lang="lean">example (h1 : A → A → B) (h2 : (A → B) → A) : B :=
+begin
+  have hAB : A → B,
+  { intro a,
+    apply h1,
+    exact a,
+    exact a },
+  have hA : A,
+  { apply h2,
+    exact hAB },
+  apply h1,
+  exact hA,
+  exact hA
+end
+</code></pre><h2 id="interlude---term-mode">Interlude - Term Mode<a href="#interlude---term-mode" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Using just <code>have</code>, <code>intro</code>, <code>apply</code>, <code>exact</code>, <code>cases</code> and <code>split</code>, we can solve all of the goals here. But if we&rsquo;re only using these tactics, there is little to no benefit with using tactics, since we could just as well use term mode, which would also end up being less verbose. Let&rsquo;s go through converting our proofs into term mode.</p>
+<p>To start off, let&rsquo;s use the second proof.</p>
+<pre><code class="language-lean" data-lang="lean">example (h1 : A → A → B) (h2 : (A → B) → A) : B :=
+</code></pre><p>We can change the <code>have</code> into term mode fairly easily, the only changes are that we need to use <code>by</code> to go back into tactic mode for the time being.</p>
+<pre><code class="language-lean" data-lang="lean">example (h1 : A → A → B) (h2 : (A → B) → A) : B :=
+have hAB : A → B, by { intro a, apply h1, exact a, exact a },
+have hA : A, by { apply h2, exact hAB },
+sorry
+</code></pre><p>Then, we cna use the <code>show_term</code> tactic to convert our proofs from tactic mode to term mode. If we put <code>show_term</code> after the <code>by</code> like so, we get the corresponding term. Click on the suggestion and it will automatically replace the proof.</p>
+<pre><code class="language-lean" data-lang="lean">example (h1 : A → A → B) (h2 : (A → B) → A) : B := 
+have hAB : A → B, by show_term { intro a, apply h1, exact a, exact a },
+have hA : A, by { apply h2, exact hAB },
+sorry
+</code></pre><p>However, in term mode we will need a <code>from</code> to tell Lean what comes next is a proof of the local hypothesis.</p>
+<pre><code class="language-lean" data-lang="lean">example (h1 : A → A → B) (h2 : (A → B) → A) : B := 
+have hAB : A → B, from λ (a : A), h1 a a,
+have hA : A, by { apply h2, exact hAB },
+sorry
+</code></pre><p>We can do the same with the second <code>have</code>,</p>
+<pre><code class="language-lean" data-lang="lean">example (h1 : A → A → B) (h2 : (A → B) → A) : B := 
+have hAB : A → B, from λ (a : A), h1 a a,
+have hA : A, from h2 hAB,
+sorry
+</code></pre><p>Finally, paste in the code to finish the proof into another <code>by {}</code>, and we can use <code>show_term</code> to automatically generate the term for us.</p>
+<pre><code class="language-lean" data-lang="lean">example (h1 : A → A → B) (h2 : (A → B) → A) : B := 
+have hAB : A → B, from λ (a : A), h1 a a,
+have hA : A, from h2 hAB,
+by { apply h1, exact hA, exact hA }
+</code></pre><p>We don&rsquo;t need to add a <code>from</code> here, so it looks like this:</p>
+<pre><code class="language-lean" data-lang="lean">example (h1 : A → A → B) (h2 : (A → B) → A) : B := 
+have hAB : A → B, from λ (a : A), h1 a a,
+have hA : A, from h2 hAB,
+h1 hA hA
+</code></pre><p>Equally, we could have copied our original tactic proof and let <code>show_term</code> generate the term mode proof, which would look like so:</p>
+<pre><code class="language-lean" data-lang="lean">example (h1 : A → A → B) (h2 : (A → B) → A) : B := 
+h1 (h2 (λ (a : A), h1 a a)) (h2 (λ (a : A), h1 a a))
+</code></pre><p>We can do something similar for the first proof. <code>show_term</code> can be used, but the proof it generates is not &ldquo;idiomatic&rdquo;.</p>
+<pre><code class="language-lean" data-lang="lean">example (h : A ∧ B) : B ∧ A :=
+</code></pre><p>The <code>cases</code> line can be replaced with <code>let ... := ... in ...</code> and pattern matching. <code>⟨hA, hB⟩</code> is an anonymous constructor, and</p>
+<pre><code class="language-lean" data-lang="lean">example (h : A ∧ B) : B ∧ A :=
+let ⟨hA, hB⟩ := h in
+_
+</code></pre>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="/posts/rosetta/">
+                <span class="button__text">Rosetta</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+    <div class="footer__inner">
+      
+        <div class="copyright copyright--user">
+          <span>2020 Shing Tak Lam. All rights reserved.</span>
+      
+          <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+        </div>
+    </div>
+  </footer>
+  
+  
+  
+  
+  
+  
+  <script src="/js/menu.js"></script>
+  <script src="/js/prism.js"></script>
+  
+  
+  
+
+
+  
+</div>
+
+</body>
+</html>

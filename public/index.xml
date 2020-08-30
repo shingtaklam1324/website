@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shing Tak Lam</title>
+    <link>/</link>
+    <description>Recent content on Shing Tak Lam</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>2020 Shing Tak Lam. All rights reserved.</copyright>
+    <lastBuildDate>Sun, 30 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Basic Logic in Lean</title>
+      <link>/posts/logic/</link>
+      <pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/logic/</guid>
+      <description>A cool website for learning some basic logic is the Incredible Proof Machine, which can be found here. The web UI allows for the user to see what they&amp;rsquo;re doing, and how everything ties together. However, this UI can sometimes be a bit frustrating, and sometimes we end up spending more time than necessary creating the same sub-proof over and over again. So I got interesting in trying to port this to Lean, and see what it would be like to try and solve them in Lean instead.</description>
+    </item>
+    
+    <item>
+      <title>Rosetta</title>
+      <link>/posts/rosetta/</link>
+      <pubDate>Sat, 29 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/rosetta/</guid>
+      <description>From personal experience, when learning an interactive theorem prover like Lean, there&#39;s a lot of &amp;quot;this should be obvious, now how do I do this&amp;quot; when getting started. Part of this is the rigour involved, as some things which may seem obvious are actually more subtle than it initially seems. In other cases, it may be that the approach taken by the mathematics library is different to the one used commonly.</description>
+    </item>
+    
+    <item>
+      <title>Formalising polynomials</title>
+      <link>/posts/formalising_polynomials/</link>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/formalising_polynomials/</guid>
+      <description>One thing that comes up frequently in mathematics is the idea of polynomials, and we would like to be able to reason on any polynomial. To do this requires us to develop the theory of polynomials.
+To start off, we need the definition of polynomials. Wikipedia says
+ In mathematics, a polynomial is an expression consisting of variables (also called indeterminates) and coefficients, that involves only the operations of addition, subtraction, multiplication, and non-negative integer exponents of variables</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>About me Hello, I&amp;rsquo;m Shing. I am a first year undergraduate at the University of Cambridge reading Mathematics.
+My email address is shingtaklam@gmail.com.
+About this website This website is built using Hugo, using the Terminal theme with some modifications. The font is Iosevka, for which the copyright notice is below
+ Copyright (c) 2015-2020 Belleve Invis (belleve@typeof.net).
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description>This page has a partial list of the projects that I have worked on.
+Lean The main Lean project I&amp;rsquo;ve been involved in is mathlib, which is the community mathematics library. I have also submitted some PRs to the Lean community website as well as the community fork of Lean 3.
+Personally, the first project I worked on was formalising a STEP question in Lean. This also involved an extension by building up the theory of polynomial derivations and solving the question using it.</description>
+    </item>
+    
+  </channel>
+</rss>
